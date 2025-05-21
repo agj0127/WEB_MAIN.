@@ -1,58 +1,66 @@
-// function session_set() { //세션 저장
-//     let session_id = document.querySelector("#typeEmailX");
-//     if (sessionStorage) {
-//     sessionStorage.setItem("Session_Storage_test", session_id.value);
-//     } else {
-//     alert("로컬 스토리지 지원 x");
-//     }
-// }
-function session_set() { //세션 저장
-    let session_id = document.querySelector("#typeEmailX"); // DOM 트리에서 ID 검색
-    let session_pass = document.querySelector("#typePasswordX"); // DOM 트리에서 pass 검색
-    if (sessionStorage) {
-        let en_text = encrypt_text(session_pass.value);
-        sessionStorage.setItem("Session_Storage_id", session_id.value);
-        sessionStorage.setItem("Session_Storage_pass", en_text);
-    } 
-else {
-        alert("로컬 스토리지 지원 x");
-    }
-}
+import { encrypt_text, decrypt_text } from './js_crypto.js';
 
-// function session_get() { //세션 읽기
-//     if (sessionStorage) {
-//         return sessionStorage.getItem("Session_Storage_test");
-//     } else {
-//         alert("세션 스토리지 지원 x");
-//     }
-// }
-function session_get() { //세션 읽기
+// 세션 저장 - 폼에서 직접 읽어서 객체 생성 후 암호화 저장
+export function session_set() {
+    let id = document.querySelector("#typeEmailX").value;
+    let password = document.querySelector("#typePasswordX").value;
+    let random = new Date().toISOString(); // ISO 형식의 타임스탬프
+
+    const obj = {
+        id: id,
+        password: password,
+        time: random
+    };
+
     if (sessionStorage) {
-    return sessionStorage.getItem("Session_Storage_pass");
+        const objString = JSON.stringify(obj);
+        const en_text = encrypt_text(objString); // 암호화된 문자열
+        sessionStorage.setItem("Session_Storage_join", en_text);
     } else {
-    alert("세션 스토리지 지원 x");
-    }
-    }
-
-// function session_check() { //세션 검사
-//     if (sessionStorage.getItem("Session_Storage_test")) {
-//     alert("이미 로그인 되었습니다.");
-//     location.href='../login/index_login.html'; // 로그인된 페이지로 이동
-//     }
-//     }
-    
-function session_check() { //세션 검사
-    if (sessionStorage.getItem("Session_Storage_id")) {
-    alert("이미 로그인 되었습니다.");
-    location.href='../login/index_login.html'; // 로그인된 페이지로 이동
+        alert("세션 스토리지 지원 x");
     }
 }
 
-function session_del() {//세션 삭제
-        if (sessionStorage) {
-             sessionStorage.removeItem("Session_Storage_test");
-              alert('로그아웃 버튼 클릭 확인 : 세션 스토리지를 삭제합니다.');
-        } else {
+// 세션 저장 - 외부에서 객체를 받아 암호화하여 저장
+export function session_set2(obj) {
+    if (sessionStorage) {
+        const objString = JSON.stringify(obj);
+        const en_text = encrypt_text(objString);
+        sessionStorage.setItem("Session_Storage_join", en_text);
+    } else {
         alert("세션 스토리지 지원 x");
+    }
+}
+
+// 세션 읽기 - 복호화 포함
+export function session_get() {
+    if (sessionStorage) {
+        const en_text = sessionStorage.getItem("Session_Storage_join");
+        if (en_text) {
+            const de_text = decrypt_text(en_text);
+            return JSON.parse(de_text); // 문자열 → 객체로 변환
         }
-        }
+        return null;
+    } else {
+        alert("세션 스토리지 지원 x");
+        return null;
+    }
+}
+
+// 세션 검사 - 로그인 여부 체크
+export function session_check() {
+    if (sessionStorage.getItem("Session_Storage_join")) {
+        alert("이미 로그인 되었습니다.");
+        location.href = '../login/index_login.html'; // 로그인된 페이지로 이동
+    }
+}
+
+// 세션 삭제
+export function session_del() {
+    if (sessionStorage) {
+        sessionStorage.removeItem("Session_Storage_join");
+        alert('로그아웃: 세션이 삭제되었습니다.');
+    } else {
+        alert("세션 스토리지 지원 x");
+    }
+}
