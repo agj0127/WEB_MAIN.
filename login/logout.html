@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>LOL 메인화면</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        >
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="20231407">
+        <meta name="keywords" content="computer">
+        <base href="http://127.0.0.1:5500">
+        <style>
+            table {
+                font-size: 20pt;
+                color: white;
+            }
+            body {
+                background-color: black;
+            }
+            /* 로그아웃 카드 스타일 */
+            .logout-card {
+                max-width: 400px;
+                margin: 60px auto;
+                background-color: #1e1e1e;
+                border-radius: 8px;
+                padding: 30px;
+                text-align: center;
+                color: white;
+            }
+            .logout-card h3 {
+                margin-bottom: 20px;
+            }
+        </style>
+
+        <script type="text/javascript" defer src="js/js_test.js" ></script>
+        <script type="module" defer src="../js/login2.js" ></script>
+        <!--
+        <script type="text/javascript" defer src="../js/js_session.js"></script>
+        <script type="text/javascript" defer src="../js/js_crypto.js"></script>
+        <script type="text/javascript" defer src="../js/js_jwt_token.js"></script>
+        -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
+            integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script type="text/javascript" defer src="js/js_search.js"></script>
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+        <script type="module">
+        // session_del을 여기서 불러옵니다.
+        import { session_del } from "../js/js_session.js";
+
+        // HTML 버튼에서 onclick으로 직접 호출할 수 있게 전역에 노출
+        window.session_del = session_del;
+
+        window.logout = () => {
+            // 1) 세션 스토리지 삭제
+            session_del();
+
+            // 2) 로컬 스토리지의 jwt_token 삭제 (추가된 부분)
+            localStorage.removeItem('jwt_token');
+
+            // 3) index.html(메인)으로 이동
+            location.href = "../index.html";
+        };
+
+        </script>
+    </head>
+
+    <body>
+        <div style="display: flex; justify-content: center;">
+            <!-- image/logo.svg = image 폴더 안 logo.svg 파일을 불러오는 것을 나타냄. -->
+            <img
+                src="image/logo.svg"
+                width="150"
+                height="80"
+                onmouseover="over(this)"
+                onmouseout="out(this)"
+                alt="로고"
+            >
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">홈페이지</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">게임소개</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">다운로드</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">게시판</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="login/profile.html" target="_blank">
+                                    기본정보(프로필)
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a
+                                    class="nav-link dropdown-toggle"
+                                    href="#"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    드랍다운 메뉴
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="https://www.google.co.kr/">드랍다운 메뉴1</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="https://www.google.co.kr/">드랍다운 메뉴2</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="https://www.google.co.kr/">
+                                            드랍다운 메뉴3
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                            </li>
+                        </ul>
+                        <form class="d-flex" role="search" onsubmit="return googleSearch();">
+                            <input
+                                class="form-control me-2"
+                                id="search_input"
+                                name="q"
+                                type="search"
+                                placeholder="키워드 입력"
+                                aria-label="Search"
+                            >
+                            <button
+                                class="btn btn-outline-success"
+                                id="search_button_msg"
+                                type="submit"
+                            >
+                                검색하기
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <a href="login/login.html" class="btn btn-outline-success" id="login_btn">로그인</a>
+            </nav>
+        </div>
+
+        <hr>
+
+
+        <div class="logout-card">
+            <h3>로그아웃 메인화면</h3>
+            <button
+                id="logout_btn"
+                class="btn btn-outline-light"
+                onclick="logout()"
+            >
+                로그아웃
+            </button>
+        </div>
+
+
+        <hr>
+
+        <div class="container-fluid" style="display: flex; justify-content: center;">
+            <a href="index.html" target="_blank">
+                <img src="image/main.png" class="img-fluid" width="1200" height="768" alt="메인 이미지">
+            </a>
+            <a href="https://www.leagueoflegends.com/ko-kr/how-to-play/" target="_blank">게임 정보</a>
+        </div>
+
+        <div style="display: flex; justify-content: center;">
+            <table class="table caption-top" border="5" style="background-color: #9d9494;">
+                <caption>인기 캐릭터</caption>
+                <tbody>
+                    <tr>
+                        <td width="80" rowspan="2" style="background-color: #98DB2C; color: black;">
+                            사이온
+                        </td>
+                        <td style="background-color: #98DB2C; color: black;">아리</td>
+                        <td style="background-color: #98DB2C; color: black;">가렌</td>
+                        <td style="background-color: #98DB2C; color: black;">가렌2</td>
+                        <td style="background-color: #98DB2C; color: black;">가렌3</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #A53434; color: white;">
+                            <a
+                                href="https://www.leagueoflegends.com/ko-kr/how-to-play/"
+                                target="_blank"
+                                style="color: white; text-decoration: underline;"
+                            >
+                                게임 정보
+                            </a>
+                        </td>
+                        <td style="background-color: #A53434; color: white;">카직스</td>
+                        <td style="background-color: #A53434; color: white;">루시안</td>
+                        <td style="background-color: #A53434; color: white;">바이</td>
+                        <td style="background-color: #A53434; color: white;">바이2</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #F6CDCD; color: #184750;"><b>카직스</b></td>
+                        <td style="background-color: #F6CDCD; color: #184750;">루시안</td>
+                        <td style="background-color: #F6CDCD; color: #184750;">루시안2</td>
+                        <td colspan="2" style="background-color: #F6CDCD; color: #184750;">
+                            <span style="font-size: 13px;">
+                                바이1, 2&nbsp;
+                                <img src="image/char.jpg" width="50" height="50" alt="챔피언 이미지">
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <div style="display: flex; justify-content: center;">
+            <h3
+                style="font-size: 24px; font-weight: bold; font-style: italic; color: white; font-family: '굴림';"
+            >
+                라이엇 게임 회사 정보 2024년 X월 작성됨
+            </h3>
+        </div>
+
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+        <script type="text/javascript" src="../js/js_test.js"></script>
+    </body>
+</html>
